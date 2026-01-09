@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "daisyui";
 
 :root {
   font-family: Helvetica, Arial, sans-serif;
@@ -7,10 +8,24 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #040d36;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+body {
+  @apply px-30 py-10;
+}
+
+h1 {
+  @apply pb-2 text-4xl font-bold text-cyan-300;
+}
+
+p {
+  @apply text-black;
+}
+button {
+  @apply px-4 py-2 bg-cyan-300 text-blue-950 rounded-xl text-lg font-semibold;
 }
