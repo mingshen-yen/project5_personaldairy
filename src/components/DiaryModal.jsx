@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function DiaryModal() {
-  const [diaryDetails, setdiaryDetails] = useState([
-    {
-      title: "test",
-      date: "",
-      img: "https://images.unsplash.com/photo-1641173587142-ce4c1b35e950?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwZWFjZWZ1bCUyMG5hdHVyZSUyMHNjZW5lcnl8ZW58MXx8fHwxNzY3NTgwNjQwfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-      content: "",
-    },
-  ]);
+  const [diaryDetails, setDiaryDetails] = useState(() => {
+    const saved = localStorage.getItem("diaryDetails");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("diaryDetails", JSON.stringify(diaryDetails));
+  }, [diaryDetails]);
 
   const handleAdd = () => {
     document.getElementById("my_modal_1").showModal();
@@ -19,7 +19,18 @@ export default function DiaryModal() {
     const date = diaryDetails.get("date");
     const img = diaryDetails.get("img");
     const content = diaryDetails.get("content");
+    const newDiary = {
+      title: title,
+      date: date,
+      img: img,
+      content: content,
+    };
+
+    setDiaryDetails((prev) => {
+      return [...prev, newDiary];
+    });
   };
+  console.log(diaryDetails);
 
   return (
     <div>
@@ -46,7 +57,6 @@ export default function DiaryModal() {
                 <input
                   type="date"
                   name="date"
-                  value={diaryDetails.date}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   required
                 />
@@ -59,7 +69,6 @@ export default function DiaryModal() {
                 <input
                   type="text"
                   name="title"
-                  value={diaryDetails.title}
                   placeholder="Enter a title..."
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 />
@@ -70,9 +79,8 @@ export default function DiaryModal() {
                   Content
                 </label>
                 <textarea
-                  name="title"
+                  name="content"
                   rows={6}
-                  value={diaryDetails.content}
                   placeholder="Write your thoughts, experiences, and memories..."
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 />
@@ -85,7 +93,6 @@ export default function DiaryModal() {
                 <input
                   type="url"
                   name="img"
-                  value={diaryDetails.img}
                   placeholder="https://example.com/image.jpg"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 />
